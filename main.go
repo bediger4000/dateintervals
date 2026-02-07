@@ -87,7 +87,7 @@ func (k *keeper) timestampParser(text string) error {
 	if err != nil {
 		return fmt.Errorf("%q unparseable\n", text)
 	}
-	if k.n > 1 {
+	if k.n > 0 {
 		x := timestamp.Sub(k.last)
 		fmt.Printf(k.outputFmt, x.Seconds())
 	}
