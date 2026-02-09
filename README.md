@@ -36,6 +36,7 @@ $ go build $PWD
 ```
   -o string
         floating point output format (default "%.0f")
+  -p    print timestamps and intervals
   -t string
         time.Parse timestamp format (default "2006-01-02T15:04:05Z07:00")
 ```
@@ -56,6 +57,9 @@ That layout matches input strings like "2026-01-17T15:57:17Z".
 You can put one input file on the command line, after any flags.
 Otherwise, `dateintervals` reads from stdin.
 Output is always on stdout.
+
+`-p` prints input timestamps as well as intervals on stdout.
+This can help figuring out where an anomalous interval appears.
 
 #### Examples
 
