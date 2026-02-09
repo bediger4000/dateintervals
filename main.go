@@ -10,16 +10,18 @@ import (
 )
 
 type keeper struct {
-	timestampFmt string
-	outputFmt    string
-	last         time.Time
-	n            int
+	timestampFmt    string
+	outputFmt       string
+	last            time.Time
+	n               int
+	printTimestamps bool
 }
 
 func main() {
 
 	outputFmt := flag.String("o", "%.0f", "floating point output format")
 	timestampFmt := flag.String("t", time.RFC3339, "time.Parse timestamp format")
+	printTimestamps := flag.Bool("p", false, "print timestamps and intervals")
 	flag.Parse()
 
 	fin, closefn, err := openInputFile()
@@ -31,8 +33,9 @@ func main() {
 	realOutputFmt := fmt.Sprintf("%s\n", *outputFmt)
 
 	k := &keeper{
-		timestampFmt: *timestampFmt,
-		outputFmt:    realOutputFmt,
+		timestampFmt:    *timestampFmt,
+		outputFmt:       realOutputFmt,
+		printTimestamps: *printTimestamps,
 	}
 
 	scanAllines(fin, k.timestampParser)
@@ -90,6 +93,9 @@ func (k *keeper) timestampParser(text string) error {
 	if k.n > 0 {
 		x := timestamp.Sub(k.last)
 		fmt.Printf(k.outputFmt, x.Seconds())
+	}
+	if k.printTimestamps {
+		fmt.Printf("%s\n", text)
 	}
 	k.last = timestamp
 	k.n++
